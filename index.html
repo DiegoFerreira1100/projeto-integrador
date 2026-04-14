@@ -145,94 +145,86 @@
         <!-- Main Content -->
         <main class="main-viewport">
             <!-- Menu Principal -->
-            <!-- Menu Principal - NOVO DESIGN -->
-<div id="main-menu" class="app-section active">
-    <!-- Banner Superior com Logo -->
-    <div class="hero-banner">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <div class="logo-container">
-                <img src="imagens/brasao.png" alt="Logo da Escola" class="school-logo" onerror="this.style.display='none'">
-                <div class="school-name">EEEP Comendador Miguel Gurgel</div>
-            </div>
-            <h1 class="welcome-title">Bem-vindo, <span id="welcome-user-name">servidor</span>!</h1>
-            <p class="welcome-subtitle">O que você deseja gerenciar hoje?</p>
-        </div>
-    </div>
+            <div id="main-menu" class="app-section active">
+                <div class="hero-banner">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <div class="logo-container">
+                            <img src="imagens/brasao.png" alt="Logo da Escola" class="school-logo" onerror="this.style.display='none'">
+                            <div class="school-name">EEEP Comendador Miguel Gurgel</div>
+                        </div>
+                        <h1 class="welcome-title">Bem-vindo, <span id="welcome-user-name">servidor</span>!</h1>
+                        <p class="welcome-subtitle">O que você deseja gerenciar hoje?</p>
+                    </div>
+                </div>
 
-    <!-- Cards de Acesso Rápido -->
-    <div class="quick-access">
-        <h2 class="section-title">Acesso Rápido</h2>
-        <div class="cards-grid">
-            <!-- Card Laboratórios -->
-            <div class="dashboard-card" onclick="Navigation.showSection('reservas')">
-                <div class="card-icon-wrapper">
-                    <span class="card-icon">🧪</span>
-                </div>
-                <h3 class="card-title">Laboratórios</h3>
-                <p class="card-description">Reserve e gerencie os laboratórios de Informática, Hardware e Multimídia</p>
-                <div class="card-footer">
-                    <span class="card-link">Acessar →</span>
-                </div>
-            </div>
+                <div class="quick-access">
+                    <h2 class="section-title">Acesso Rápido</h2>
+                    <div class="cards-grid">
+                        <div class="dashboard-card" onclick="Navigation.showSection('reservas')">
+                            <div class="card-icon-wrapper">
+                                <span class="card-icon">🧪</span>
+                            </div>
+                            <h3 class="card-title">Laboratórios</h3>
+                            <p class="card-description">Reserve e gerencie os laboratórios de Informática, Hardware e Multimídia</p>
+                            <div class="card-footer">
+                                <span class="card-link">Acessar →</span>
+                            </div>
+                        </div>
 
-            <!-- Card Monitoria -->
-            <div class="dashboard-card" onclick="Navigation.showSection('monitoria')">
-                <div class="card-icon-wrapper">
-                    <span class="card-icon">📋</span>
-                </div>
-                <h3 class="card-title">Monitoria</h3>
-                <p class="card-description">Gerencie a escala de monitores e postos de trabalho</p>
-                <div class="card-footer">
-                    <span class="card-link">Acessar →</span>
-                </div>
-            </div>
+                        <div class="dashboard-card" onclick="Navigation.showSection('monitoria')">
+                            <div class="card-icon-wrapper">
+                                <span class="card-icon">📋</span>
+                            </div>
+                            <h3 class="card-title">Monitoria</h3>
+                            <p class="card-description">Gerencie a escala de monitores e postos de trabalho</p>
+                            <div class="card-footer">
+                                <span class="card-link">Acessar →</span>
+                            </div>
+                        </div>
 
-            <!-- Card Configurações (apenas para coordenador) -->
-            <div class="dashboard-card coordenador-only" onclick="Navigation.showSection('cadastros')">
-                <div class="card-icon-wrapper">
-                    <span class="card-icon">⚙️</span>
+                        <div class="dashboard-card coordenador-only" onclick="Navigation.showSection('cadastros')">
+                            <div class="card-icon-wrapper">
+                                <span class="card-icon">⚙️</span>
+                            </div>
+                            <h3 class="card-title">Configurações</h3>
+                            <p class="card-description">Gerencie períodos letivos, relatórios e cadastros</p>
+                            <div class="card-footer">
+                                <span class="card-link">Acessar →</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="card-title">Configurações</h3>
-                <p class="card-description">Gerencie períodos letivos, relatórios e cadastros</p>
-                <div class="card-footer">
-                    <span class="card-link">Acessar →</span>
+
+                <div class="quick-info">
+                    <div class="info-card">
+                        <span class="info-icon">📅</span>
+                        <div class="info-content">
+                            <span class="info-label">Data atual</span>
+                            <span class="info-value" id="current-date-display"></span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">👥</span>
+                        <div class="info-content">
+                            <span class="info-label">Professores</span>
+                            <span class="info-value" id="professores-count">0</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">🏫</span>
+                        <div class="info-content">
+                            <span class="info-label">Turmas</span>
+                            <span class="info-value" id="turmas-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="motivational-quote">
+                    <p>"Educação não transforma o mundo. Educação muda as pessoas. Pessoas transformam o mundo."</p>
+                    <span>— Paulo Freire</span>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Informações Rápidas -->
-    <div class="quick-info">
-        <div class="info-card">
-            <span class="info-icon">📅</span>
-            <div class="info-content">
-                <span class="info-label">Data atual</span>
-                <span class="info-value" id="current-date-display"></span>
-            </div>
-        </div>
-        <div class="info-card">
-            <span class="info-icon">👥</span>
-            <div class="info-content">
-                <span class="info-label">Professores</span>
-                <span class="info-value" id="professores-count">0</span>
-            </div>
-        </div>
-        <div class="info-card">
-            <span class="info-icon">🏫</span>
-            <div class="info-content">
-                <span class="info-label">Turmas</span>
-                <span class="info-value" id="turmas-count">0</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Frase Motivacional -->
-    <div class="motivational-quote">
-        <p>"Educação não transforma o mundo. Educação muda as pessoas. Pessoas transformam o mundo."</p>
-        <span>— Paulo Freire</span>
-    </div>
-</div>
 
             <!-- Seção de Reservas -->
             <div id="sec-reservas" class="app-section">
@@ -244,7 +236,6 @@
                 </div>
                 
                 <div class="reservas-layout">
-                    <!-- Conteúdo principal -->
                     <div class="reservas-content">
                         <div class="calendar-container large-calendar">
                             <div class="calendar-controls">
@@ -289,7 +280,6 @@
                         </div>
                     </div>
                     
-                    <!-- Barra lateral fixa com laboratórios -->
                     <div class="lab-sidebar-fixed">
                         <h3 class="lab-sidebar-title">Laboratórios</h3>
                         <div class="lab-buttons">
@@ -389,6 +379,17 @@
                                 <span class="lab-name">Monitor Multimeios</span>
                             </button>
                         </div>
+                        
+                        <div class="lab-info">
+                            <h4>ÁREA ATUAL</h4>
+                            <div id="current-monitoria-display" class="current-lab">
+                                <span class="current-lab-icon">🏠</span>
+                                <span class="current-lab-name">Monitoria Geral</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Seção de Configurações -->
             <div id="sec-cadastros" class="app-section">
@@ -399,10 +400,35 @@
                     <h2>⚙️ Painel do Coordenador</h2>
                 </div>
                 
-                <!-- MÊS/ANO - CONTROLES MELHORADOS -->
+                <!-- Controles de Mês/Ano -->
+                <div class="config-card">
+                    <div class="card-header">
+                        <h3>📅 Controle de Visualização</h3>
+                        <span class="card-badge">Geral</span>
+                    </div>
+                    <div class="periodo-controles">
+                        <div class="controle-grupo">
+                            <label>Mês</label>
+                            <select id="controle-mes" class="controle-select">
+                                <option value="0">Janeiro</option><option value="1">Fevereiro</option>
+                                <option value="2">Março</option><option value="3">Abril</option>
+                                <option value="4">Maio</option><option value="5">Junho</option>
+                                <option value="6">Julho</option><option value="7">Agosto</option>
+                                <option value="8">Setembro</option><option value="9">Outubro</option>
+                                <option value="10">Novembro</option><option value="11">Dezembro</option>
+                            </select>
+                        </div>
+                        <div class="controle-grupo">
+                            <label>Ano</label>
+                            <select id="controle-ano" class="controle-select"></select>
+                        </div>
+                        <button class="btn-primary btn-aplicar" onclick="Periodos.aplicarMesAno()">
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
                 
-                
-                <!-- PERÍODOS LETIVOS - COMPLETO -->
+                <!-- Períodos Letivos -->
                 <div class="config-card periodo-card coordenador-only">
                     <div class="card-header">
                         <h3>📅 Períodos Letivos</h3>
@@ -410,7 +436,6 @@
                     </div>
                     <p class="config-description">
                         Defina os períodos do ano que terão aula. Fora desses períodos, os dias ficam automaticamente bloqueados.
-                        Você pode configurar por semestre, mês ou datas específicas.
                     </p>
                     
                     <div class="periodos-acoes-rapidas">
@@ -428,7 +453,7 @@
                     <div id="periodos-container" class="periodos-grid"></div>
                 </div>
                 
-                <!-- RELATÓRIOS - CORRIGIDO -->
+                <!-- Relatórios -->
                 <div class="config-card relatorio-card coordenador-only">
                     <div class="card-header">
                         <h3>📊 Relatórios</h3>
@@ -467,15 +492,17 @@
                     </div>
                 </div>
                 
-                <!-- CARDS DE CADASTRO -->
+                <!-- Cards de Cadastro -->
                 <div class="config-grid">
-                    <!-- Card de Professores -->
                     <div class="config-card">
                         <h3>👨‍🏫 Professores</h3>
+                        <div class="input-action">
+                            <input type="text" id="new-professor" placeholder="Nome do professor">
+                            <button class="btn-add" onclick="Database.cadastrarProfessor('new-professor')">+</button>
+                        </div>
                         <ul id="list-professores" class="data-list"></ul>
                     </div>
                     
-                    <!-- Card de Turmas -->
                     <div class="config-card">
                         <h3>🏫 Turmas</h3>
                         <div class="input-action">
@@ -485,13 +512,11 @@
                         <ul id="list-turmas-simples" class="data-list"></ul>
                     </div>
                     
-                    <!-- Card de Monitores por Turma -->
                     <div class="config-card monitores-card">
                         <h3>🎓 Monitores por Turma</h3>
                         <p class="config-description">
                             Cadastre os monitores vinculados a cada turma.
                         </p>
-                        
                         <div id="monitores-container" class="monitores-container"></div>
                     </div>
                 </div>
@@ -516,6 +541,7 @@
     <script src="js/modules/reservations.js"></script>
     <script src="js/modules/navigation.js"></script>
     <script src="js/modules/ui.js"></script>
+    <script src="js/modules/config.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
