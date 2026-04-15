@@ -1,6 +1,6 @@
 // ============================================
 // UI.JS - Interface do Usuário
-// Versão Corrigida - Modal de Confirmação Funcionando
+// Versão Atualizada - Sem Emojis
 // ============================================
 
 const UI = (function() {
@@ -60,7 +60,7 @@ const UI = (function() {
         } else {
             el.innerHTML = itens.map((item, i) => 
                 `<li class="list-item">
-                    <span class="item-nome">👨‍🏫 ${item}</span>
+                    <span class="item-nome">${item}</span>
                     <button class="btn-delete" onclick="Database.removerProfessor(${i})" title="Remover professor">
                         <span class="delete-icon">×</span>
                     </button>
@@ -80,7 +80,7 @@ const UI = (function() {
         } else {
             el.innerHTML = itens.map((item, i) => 
                 `<li class="list-item">
-                    <span class="item-nome">🏫 ${item}</span>
+                    <span class="item-nome">${item}</span>
                     <button class="btn-delete" onclick="Database.removerTurma(${i})" title="Remover turma">
                         <span class="delete-icon">×</span>
                     </button>
@@ -100,7 +100,6 @@ const UI = (function() {
         if (turmas.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <span class="empty-icon">👥</span>
                     <p>Nenhuma turma cadastrada</p>
                     <p class="empty-hint">Cadastre uma turma primeiro</p>
                 </div>
@@ -116,7 +115,7 @@ const UI = (function() {
             html += `
                 <div class="turma-monitores-card">
                     <div class="turma-header">
-                        <h4>📚 ${turma}</h4>
+                        <h4>${turma}</h4>
                         <span class="monitores-count">${monitores.length} monitor(es)</span>
                     </div>
                     
@@ -125,7 +124,7 @@ const UI = (function() {
                             '<p class="empty-monitores">Nenhum monitor cadastrado</p>' : 
                             monitores.map((monitor, idx) => `
                                 <div class="monitor-item">
-                                    <span class="monitor-nome">👤 ${monitor}</span>
+                                    <span class="monitor-nome">${monitor}</span>
                                     <button class="btn-delete-small" onclick="Database.removerMonitor('${turma}', ${idx})" title="Remover monitor">
                                         ×
                                     </button>
@@ -159,15 +158,6 @@ const UI = (function() {
         const modal = document.createElement('div');
         modal.className = 'confirm-modal';
         
-        let icone = '❓';
-        if (titulo.includes('Remover') || titulo.includes('Limpar')) {
-            icone = '🗑️';
-        } else if (titulo.includes('Sucesso')) {
-            icone = '✅';
-        } else if (titulo.includes('Erro')) {
-            icone = '❌';
-        }
-        
         // Criar um ID único para este modal
         const callbackId = 'callback_' + Date.now();
         // Armazenar o callback no escopo global
@@ -175,27 +165,24 @@ const UI = (function() {
             if (typeof onConfirm === 'function') {
                 onConfirm();
             } else if (typeof onConfirm === 'string') {
-                // Se for string, avaliar como código
                 try {
                     eval(onConfirm);
                 } catch (e) {
                     console.error('Erro ao executar callback:', e);
                 }
             }
-            // Limpar após execução
             delete window[callbackId];
         };
         
         modal.innerHTML = `
-            <div class="confirm-modal-icon">${icone}</div>
             <h3 class="confirm-modal-title">${titulo}</h3>
             <div class="confirm-modal-message">${mensagem}</div>
             <div class="confirm-modal-actions">
                 <button class="confirm-modal-btn confirm-modal-btn-cancel" onclick="UI.closeConfirmModal(this)">
-                    <span class="btn-icon">✕</span> Cancelar
+                    Cancelar
                 </button>
                 <button class="confirm-modal-btn confirm-modal-btn-confirm" onclick="UI.confirmAction('${callbackId}')">
-                    <span class="btn-icon">✓</span> Confirmar
+                    Confirmar
                 </button>
             </div>
         `;

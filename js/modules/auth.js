@@ -1,6 +1,6 @@
 // ============================================
-// AUTH.JS - Sistema de Autenticação com Perfis
-// Versão: Sincronização Automática de Professores
+// AUTH.JS - Sistema de Autenticacao com Perfis
+// Versao: Sincronizacao Automatica de Professores
 // ============================================
 
 const Auth = (function() {
@@ -11,7 +11,7 @@ const Auth = (function() {
         SESSAO: 'portal_sessao'
     };
 
-    // ===== INICIALIZAÇÃO =====
+    // ===== INICIALIZACAO =====
     function init() {
         criarCoordenadorPadrao();
         setupEventListeners();
@@ -34,7 +34,7 @@ const Auth = (function() {
             
             usuarios.push(coordenador);
             salvarUsuarios(usuarios);
-            console.log('✅ Coordenador padrão criado');
+            console.log('Coordenador padrao criado');
         }
     }
 
@@ -60,7 +60,7 @@ const Auth = (function() {
         }
     }
 
-    // ===== USUÁRIOS =====
+    // ===== USUARIOS =====
     function carregarUsuarios() {
         const usuarios = localStorage.getItem(STORAGE_KEYS.USUARIOS);
         return usuarios ? JSON.parse(usuarios) : [];
@@ -72,14 +72,14 @@ const Auth = (function() {
 
     // ===== LOGIN =====
     function handleLogin() {
-        console.log('🔐 Tentativa de login...');
+        console.log('Tentativa de login...');
         
         const emailInput = document.getElementById('login-email');
         const senhaInput = document.getElementById('login-pass');
         
         if (!emailInput || !senhaInput) {
-            console.error('❌ Campos de login não encontrados');
-            mostrarMensagem('Erro no formulário de login', 'erro');
+            console.error('Campos de login nao encontrados');
+            mostrarMensagem('Erro no formulario de login', 'erro');
             return;
         }
 
@@ -95,9 +95,9 @@ const Auth = (function() {
         const usuario = usuarios.find(u => u.email === email && u.senha === senha);
 
         if (usuario) {
-            console.log('✅ Usuário encontrado:', usuario.nome);
+            console.log('Usuario encontrado:', usuario.nome);
             
-            // SE FOR PROFESSOR, ADICIONAR AUTOMATICAMENTE À LISTA
+            // SE FOR PROFESSOR, ADICIONAR AUTOMATICAMENTE A LISTA
             if (usuario.perfil === 'professor' && typeof Database !== 'undefined') {
                 Database.adicionarProfessorPorLogin(usuario.nome);
             }
@@ -106,8 +106,8 @@ const Auth = (function() {
             atualizarUltimoAcesso(usuario, usuarios);
             entrarSistema(usuario);
         } else {
-            console.log('❌ Usuário não encontrado ou senha inválida');
-            mostrarMensagem('E-mail ou senha inválidos!', 'erro');
+            console.log('Usuario nao encontrado ou senha invalida');
+            mostrarMensagem('E-mail ou senha invalidos!', 'erro');
         }
     }
 
@@ -125,7 +125,7 @@ const Auth = (function() {
         };
 
         localStorage.setItem(STORAGE_KEYS.SESSAO, JSON.stringify(sessao));
-        console.log('💾 Sessão criada:', sessao.usuario);
+        console.log('Sessao criada:', sessao.usuario);
     }
 
     function atualizarUltimoAcesso(usuario, usuarios) {
@@ -135,7 +135,7 @@ const Auth = (function() {
 
     // ===== CADASTRO =====
     function handleSignup() {
-        console.log('📝 Tentativa de cadastro...');
+        console.log('Tentativa de cadastro...');
         
         const nome = document.getElementById('reg-nome')?.value.trim();
         const email = document.getElementById('reg-email')?.value.trim().toLowerCase();
@@ -150,12 +150,12 @@ const Auth = (function() {
         const usuarios = carregarUsuarios();
 
         if (usuarios.find(u => u.email === email)) {
-            mostrarMensagem('Este e-mail já está cadastrado!', 'erro');
+            mostrarMensagem('Este e-mail ja esta cadastrado!', 'erro');
             return;
         }
 
         const novoUsuario = {
-            id: usuarios.length + 1,
+            id: Date.now(),
             nome: nome,
             email: email,
             senha: senha,
@@ -167,8 +167,8 @@ const Auth = (function() {
         usuarios.push(novoUsuario);
         salvarUsuarios(usuarios);
 
-        console.log('✅ Novo usuário cadastrado:', email);
-        mostrarMensagem('Conta criada com sucesso! Faça login.', 'sucesso');
+        console.log('Novo usuario cadastrado:', email);
+        mostrarMensagem('Conta criada com sucesso! Faca login.', 'sucesso');
 
         setTimeout(() => {
             if (typeof UI !== 'undefined') {
@@ -187,11 +187,11 @@ const Auth = (function() {
             return false;
         }
         if (senha.length < 6) {
-            mostrarMensagem('A senha deve ter no mínimo 6 caracteres!', 'erro');
+            mostrarMensagem('A senha deve ter no minimo 6 caracteres!', 'erro');
             return false;
         }
         if (!email.includes('@') || !email.includes('.')) {
-            mostrarMensagem('Digite um e-mail válido!', 'erro');
+            mostrarMensagem('Digite um e-mail valido!', 'erro');
             return false;
         }
         return true;
@@ -209,7 +209,7 @@ const Auth = (function() {
         if (perfil) perfil.value = 'professor';
     }
 
-    // ===== SESSÃO =====
+    // ===== SESSAO =====
     function verificarSessao() {
         const sessao = localStorage.getItem(STORAGE_KEYS.SESSAO);
         if (!sessao) return false;
@@ -218,22 +218,22 @@ const Auth = (function() {
             const dados = JSON.parse(sessao);
             
             if (Date.now() > dados.expira) {
-                console.log('⏰ Sessão expirada');
+                console.log('Sessao expirada');
                 logout();
                 return false;
             }
 
-            console.log('🔄 Sessão válida encontrada');
+            console.log('Sessao valida encontrada');
             return true;
         } catch (e) {
-            console.error('❌ Erro ao ler sessão:', e);
+            console.error('Erro ao ler sessao:', e);
             logout();
             return false;
         }
     }
 
     function entrarSistema(usuario) {
-        console.log('🎉 Entrando no sistema como:', usuario.perfil);
+        console.log('Entrando no sistema como:', usuario.perfil);
         
         const authScreen = document.getElementById('auth-screen');
         const appContent = document.getElementById('app-content');
@@ -243,32 +243,42 @@ const Auth = (function() {
         if (appContent) appContent.style.display = 'flex';
         if (sysHeader) sysHeader.style.display = 'flex';
 
-        // Atualizar nome do usuário no cabeçalho
+        // Atualizar nome do usuario no cabecalho
         const userInfo = document.getElementById('user-info');
         if (userInfo) {
-            const perfilTexto = usuario.perfil === 'coordenador' ? '👑 Coordenador' : '👨‍🏫 Professor';
+            const perfilTexto = usuario.perfil === 'coordenador' ? 'Coordenador' : 'Professor';
             userInfo.innerText = `${perfilTexto}: ${usuario.nome}`;
         }
 
-        // Atualizar o título do menu inicial
+        // Atualizar o titulo do menu inicial
+        const welcomeUserName = document.getElementById('welcome-user-name');
+        if (welcomeUserName) {
+            welcomeUserName.textContent = usuario.nome;
+        }
+
+        const welcomeUser = document.getElementById('welcome-user');
+        if (welcomeUser) {
+            welcomeUser.innerText = `Ola, ${usuario.nome}!`;
+        }
+
         const welcomeBox = document.querySelector('.welcome-box h1');
         if (welcomeBox) {
             welcomeBox.innerHTML = `Bem-vindo, ${usuario.nome}!`;
         }
 
-        const welcomeUser = document.getElementById('welcome-user');
-        if (welcomeUser) {
-            welcomeUser.innerText = `Olá, ${usuario.nome}!`;
-        }
-
         // Aplicar perfil ao body
         document.body.setAttribute('data-perfil', usuario.perfil);
 
-        // Mostrar/esconder elementos específicos por perfil
+        // Mostrar/esconder elementos especificos por perfil
         aplicarPermissoes(usuario.perfil);
 
         if (typeof Navigation !== 'undefined') {
             Navigation.showSection('menu');
+        }
+        
+        // Atualizar informacoes rapidas
+        if (typeof window.atualizarInfoRapida === 'function') {
+            setTimeout(() => window.atualizarInfoRapida(), 100);
         }
     }
 
@@ -280,38 +290,54 @@ const Auth = (function() {
             el.style.display = isCoordenador ? 'block' : 'none';
         });
 
+        // Ajustar elementos especificos do menu
+        const cardsCoordenador = document.querySelectorAll('.dashboard-card.coordenador-only');
+        cardsCoordenador.forEach(card => {
+            card.style.display = isCoordenador ? 'block' : 'none';
+        });
+
         if (perfil === 'professor') {
-            document.querySelectorAll('#sec-cadastros input, #sec-cadastros button, #sec-cadastros select').forEach(el => {
-                if (!el.classList.contains('back-link')) {
-                    el.disabled = true;
-                }
-            });
-            
+            // Desabilitar inputs de cadastro para professores
             const secCadastros = document.getElementById('sec-cadastros');
-            if (secCadastros && !document.getElementById('professor-msg')) {
-                const msg = document.createElement('div');
-                msg.id = 'professor-msg';
-                msg.className = 'professor-message';
-                msg.innerHTML = '👨‍🏫 Você está logado como <strong>Professor</strong>. Apenas coordenadores podem gerenciar cadastros.';
-                secCadastros.insertBefore(msg, secCadastros.firstChild);
+            if (secCadastros) {
+                const inputs = secCadastros.querySelectorAll('input, button, select');
+                inputs.forEach(el => {
+                    if (!el.classList.contains('back-link') && !el.closest('.back-link')) {
+                        el.disabled = true;
+                    }
+                });
+                
+                // Adicionar mensagem para professor
+                if (!document.getElementById('professor-msg')) {
+                    const msg = document.createElement('div');
+                    msg.id = 'professor-msg';
+                    msg.className = 'professor-message';
+                    msg.innerHTML = '<strong>Professor</strong> - Voce esta logado como Professor. Apenas coordenadores podem gerenciar cadastros.';
+                    secCadastros.insertBefore(msg, secCadastros.firstChild);
+                }
             }
         } else {
+            // Remover mensagem e habilitar inputs para coordenador
             const msg = document.getElementById('professor-msg');
             if (msg) msg.remove();
             
-            document.querySelectorAll('#sec-cadastros input, #sec-cadastros button, #sec-cadastros select').forEach(el => {
-                el.disabled = false;
-            });
+            const secCadastros = document.getElementById('sec-cadastros');
+            if (secCadastros) {
+                const inputs = secCadastros.querySelectorAll('input, button, select');
+                inputs.forEach(el => {
+                    el.disabled = false;
+                });
+            }
         }
     }
 
     function logout() {
-        console.log('👋 Fazendo logout');
+        console.log('Fazendo logout');
         localStorage.removeItem(STORAGE_KEYS.SESSAO);
         window.location.reload();
     }
 
-    // ===== UTILITÁRIOS =====
+    // ===== UTILITARIOS =====
     function mostrarMensagem(texto, tipo) {
         let msgBox = document.querySelector('.auth-message');
         
@@ -356,7 +382,59 @@ const Auth = (function() {
         return usuario && usuario.perfil === 'coordenador';
     }
 
-    // API Pública
+    function isProfessor() {
+        const usuario = getUsuarioAtual();
+        return usuario && usuario.perfil === 'professor';
+    }
+
+    // ===== GERENCIAMENTO DE USUARIOS (PARA COORDENADOR) =====
+    function listarUsuarios() {
+        return carregarUsuarios();
+    }
+
+    function removerUsuario(id) {
+        if (!isCoordenador()) {
+            mostrarMensagem('Apenas coordenadores podem remover usuarios!', 'erro');
+            return false;
+        }
+        
+        const usuarios = carregarUsuarios();
+        const index = usuarios.findIndex(u => u.id === id);
+        
+        if (index === -1) {
+            return false;
+        }
+        
+        // Nao permitir remover o ultimo coordenador
+        const coordenadores = usuarios.filter(u => u.perfil === 'coordenador');
+        if (usuarios[index].perfil === 'coordenador' && coordenadores.length <= 1) {
+            mostrarMensagem('Nao e possivel remover o ultimo coordenador!', 'erro');
+            return false;
+        }
+        
+        usuarios.splice(index, 1);
+        salvarUsuarios(usuarios);
+        return true;
+    }
+
+    function alterarSenha(id, novaSenha) {
+        const usuarios = carregarUsuarios();
+        const usuario = usuarios.find(u => u.id === id);
+        
+        if (!usuario) {
+            return false;
+        }
+        
+        if (novaSenha.length < 6) {
+            return false;
+        }
+        
+        usuario.senha = novaSenha;
+        salvarUsuarios(usuarios);
+        return true;
+    }
+
+    // API Publica
     return {
         init,
         handleLogin,
@@ -365,6 +443,10 @@ const Auth = (function() {
         verificarSessao,
         getUsuarioAtual,
         isCoordenador,
-        aplicarPermissoes
+        isProfessor,
+        aplicarPermissoes,
+        listarUsuarios,
+        removerUsuario,
+        alterarSenha
     };
 })();

@@ -1,452 +1,169 @@
 /* ============================================
    RESPONSIVE.CSS - Media Queries
-   Tema: Verde Elegante
    ============================================ */
 
-/* Tablets e Desktop Pequeno (768px - 1200px) */
 @media (max-width: 1200px) {
     .reservas-layout,
     .monitoria-layout {
         flex-direction: column;
     }
-    
-    .reservas-content,
-    .monitoria-content {
-        width: 100%;
-    }
-    
     .lab-sidebar-fixed {
         width: 100%;
         position: static;
         order: -1;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
-    
     .lab-buttons {
         flex-direction: row;
         flex-wrap: wrap;
     }
-    
     .btn-lab {
-        flex: 1 1 calc(33.333% - 0.5rem);
-        min-width: 150px;
+        flex: 1;
+        text-align: center;
     }
 }
 
-/* Tablets (768px - 1024px) */
 @media (max-width: 1024px) {
-    :root {
-        --sidebar-width: 240px;
-    }
-
-    .dashboard-grid,
-    .menu-cards {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        max-width: 700px;
-    }
-
-    .card {
-        min-height: 250px;
-        padding: 2rem 1.5rem;
-    }
-
-    .card h3 {
-        font-size: 1.4rem;
-    }
-
     .config-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Tablets e Mobile Grande (640px - 768px) */
 @media (max-width: 768px) {
-    #app-content {
-        flex-direction: column;
-    }
-
     .sidebar {
         width: 100%;
-        height: auto;
         position: relative;
+        height: auto;
         padding: 1rem;
     }
-
-    #sys-header {
-        margin-left: 0;
-        width: 100%;
-        padding: 0.75rem 1rem;
-    }
-
     .main-viewport {
         margin-left: 0;
         padding: 1rem;
         width: 100%;
     }
-
-    .nav-header {
-        margin-bottom: 1rem;
+    #sys-header {
+        margin-left: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
         text-align: center;
-        font-size: 1.3rem;
     }
-
+    .nav-header {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
     .nav-links {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 0.5rem;
-        margin-bottom: 0.5rem;
     }
-
     .nav-links li {
-        flex: 1 1 auto;
-        min-width: 120px;
+        flex: 1;
         text-align: center;
-        justify-content: center;
-        padding: 0.6rem;
-        margin-bottom: 0;
+        padding: 0.5rem;
     }
-
     .logout-btn {
         width: 100%;
-        justify-content: center;
+        margin-top: 1rem;
     }
-
-    .dashboard-grid,
-    .menu-cards {
+    .config-grid {
         grid-template-columns: 1fr;
-        max-width: 400px;
-        gap: 1rem;
     }
-
     .section-header {
         flex-direction: column;
         align-items: flex-start;
     }
-
-    .section-header h2 {
-        font-size: 1.6rem;
-    }
-
     .calendar-controls {
         flex-direction: column;
-        gap: 0.8rem;
     }
-
-    .calendar-weekdays {
-        font-size: 0.8rem;
-    }
-
-    .calendar-day {
-        font-size: 0.8rem;
-    }
-
-    .day-label {
-        font-size: 0.5rem;
-    }
-
-    .table-wrapper {
-        overflow-x: auto;
-    }
-
-    table {
-        min-width: 600px;
-    }
-
-    th, td {
-        padding: 0.8rem;
-        font-size: 0.8rem;
-    }
-
-    .config-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .periodo-controles {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .btn-aplicar {
-        width: 100%;
-    }
-
     .periodos-acoes-rapidas {
         flex-direction: column;
     }
-
     .periodos-acoes-rapidas .btn-small {
         width: 100%;
     }
-
     .relatorio-opcoes {
         grid-template-columns: 1fr;
     }
-
     .relatorio-actions {
         flex-direction: column;
     }
-
     .auth-box {
         margin: 1rem;
         padding: 1.5rem;
     }
-
-    .auth-brand h1 {
-        font-size: 1.6rem;
-    }
-
     .confirm-modal-actions {
         flex-direction: column;
     }
-
-    .header-left {
+    .confirm-modal-btn {
         width: 100%;
-        justify-content: center;
-    }
-    
-    .header-actions {
-        width: 100%;
-        justify-content: center;
-    }
-
-    #sys-header {
-        flex-direction: column;
-        gap: 0.5rem;
     }
 }
 
-/* Mobile Pequeno (até 480px) */
 @media (max-width: 480px) {
     .main-viewport {
-        padding: 0.8rem;
+        padding: 0.75rem;
     }
-
-    .nav-links li {
-        min-width: 100%;
-        font-size: 0.8rem;
-        padding: 0.5rem;
+    .section-header h2 {
+        font-size: 1.25rem;
     }
-
-    .dashboard-grid,
-    .menu-cards {
-        max-width: 100%;
-    }
-
-    .card {
-        min-height: 200px;
-        padding: 1.5rem 1rem;
-    }
-
-    .card-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .card h3 {
-        font-size: 1.2rem;
-    }
-
-    .card p {
-        font-size: 0.8rem;
-    }
-
-    .welcome-box {
-        padding: 1.5rem 1rem;
-        margin: 2rem 0 1rem;
-    }
-
-    .welcome-box h1 {
-        font-size: 1.6rem;
-    }
-    
-    .welcome-box p {
-        font-size: 0.9rem;
-    }
-
-    .calendar-container {
-        padding: 1rem;
-    }
-
-    .calendar-weekdays {
-        font-size: 0.7rem;
-    }
-
     .calendar-day {
         font-size: 0.7rem;
     }
-
-    .day-label {
-        font-size: 0.45rem;
-    }
-
     .btn-lab {
         flex: 1 1 100%;
-        padding: 0.8rem;
     }
-
-    .lab-icon {
-        font-size: 1.3rem;
-        min-width: 1.8rem;
-    }
-    
-    .lab-name {
-        font-size: 0.9rem;
-    }
-
     .config-card {
         padding: 1rem;
     }
-
-    .card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .periodo-titulo {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .periodo-acoes {
         flex-direction: column;
     }
-
     .periodo-acoes .btn-small {
         width: 100%;
     }
-
     .back-link {
         width: 100%;
         text-align: center;
-        justify-content: center;
     }
-
-    .btn-primary, .btn-secondary {
+    .btn-primary,
+    .btn-secondary {
         width: 100%;
-        justify-content: center;
+        text-align: center;
     }
-
     .input-action {
         flex-direction: column;
     }
-
     .btn-add {
         width: 100%;
-        border-radius: 30px;
     }
-
     .add-monitor-form {
         flex-direction: column;
     }
-
     .btn-add-monitor {
         width: 100%;
     }
-
-    .custom-context-menu {
-        width: 140px;
-    }
-
-    .custom-context-menu div {
-        padding: 0.6rem 1rem;
-        font-size: 0.8rem;
-    }
-
     .modal-box {
-        padding: 1.5rem;
+        padding: 1rem;
     }
 }
 
-/* Mobile Extra Pequeno (até 360px) */
 @media (max-width: 360px) {
-    .nav-links li {
-        min-width: 100%;
-    }
-
     .calendar-weekdays {
         font-size: 0.6rem;
     }
-
     .calendar-day {
         font-size: 0.65rem;
     }
-
     .auth-box {
         padding: 1rem;
     }
-
-    .auth-brand h1 {
-        font-size: 1.4rem;
-    }
-
-    .modal-box {
-        padding: 1rem;
-    }
-
     .confirm-modal {
-        padding: 1.5rem;
-    }
-
-    .confirm-modal-icon {
-        font-size: 3rem;
-    }
-
-    .confirm-modal-title {
-        font-size: 1.3rem;
+        padding: 1rem;
     }
 }
 
-/* Orientação Paisagem em Mobile */
-@media (max-height: 600px) and (orientation: landscape) {
-    .sidebar {
-        height: auto;
-        min-height: 100vh;
-    }
-
-    .auth-box {
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-
-    .modal-box {
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-}
-
-/* Telas Grandes */
-@media (min-width: 1440px) {
-    .main-viewport {
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-
-    .dashboard-grid,
-    .menu-cards {
-        max-width: 900px;
-    }
-
-    .card {
-        min-height: 320px;
-    }
-
-    .card-icon {
-        font-size: 4.5rem;
-    }
-
-    .card h3 {
-        font-size: 1.8rem;
-    }
-
-    .large-calendar .calendar-day {
-        font-size: 1rem;
-    }
-}
-
-/* Impressão */
 @media print {
     .sidebar,
     .auth-overlay,
@@ -463,48 +180,14 @@
     #sys-header {
         display: none !important;
     }
-
-    #app-content {
-        display: block;
-        margin: 0;
-        padding: 0;
-    }
-
     .main-viewport {
         margin: 0;
-        padding: 1rem;
-        width: 100%;
+        padding: 0.5rem;
     }
-
     table {
         border: 1px solid #000;
-        page-break-inside: avoid;
     }
-
     th, td {
         border: 1px solid #000;
-        color: #000;
-    }
-
-    .calendar-day {
-        border: 1px solid #000;
-        background: white;
-        color: black;
-    }
-
-    .calendar-day.selected {
-        background: #f0f0f0;
-        color: black;
-    }
-
-    .welcome-box {
-        border: 1px solid #000;
-        background: white;
-    }
-
-    .welcome-box h1 {
-        -webkit-text-fill-color: black;
-        background: none;
-        color: black;
     }
 }
