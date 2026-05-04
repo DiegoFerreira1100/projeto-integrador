@@ -1,38 +1,38 @@
-# 🏫 Portal Gestão Escolar v3.0
+# Portal Gestão Escolar v3.0
 
 Sistema profissional para gestão de laboratórios, monitoria e calendário escolar.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-### 🔐 Autenticação
+### Autenticação
 - Login com email e senha
 - Cadastro de novos usuários
 - Sessão persistente por 8 horas
 - Usuário admin padrão
 
-### 📅 Calendário
+### Calendário
 - Visualização mensal
 - Marcação de feriados e eventos
 - Clique direito para personalizar
 - Dias bloqueados configuráveis
 
-### 🧪 Laboratórios
+### Laboratórios
 - 3 laboratórios: LEI, Hardware, Multimídia
 - Reserva por horário
 - Seleção de professores e turmas
 
-### 🛡️ Monitoria
+### Monitoria
 - 5 postos de trabalho fixos
 - Escala por data
 - Atribuição de monitores e turmas
 
-### ⚙️ Configurações
+### Configurações
 - Cadastro de professores
 - Cadastro de turmas
 - Cadastro de monitores
 - Configuração de dias bloqueados
 
-## 🚀 Como Usar
+## ->Como Usar
 
 ### Acesso Inicial
 - **Email:** admin@escola.com
@@ -54,12 +54,6 @@ Sistema profissional para gestão de laboratórios, monitoria e calendário esco
 - Escolha professor e turma para cada horário
 - Dias bloqueados não permitem reservas
 
-## 🛠️ Tecnologias
 
-- HTML5
-- CSS3 (com variáveis CSS)
-- JavaScript (modular)
-- LocalStorage para persistência
-- Design responsivo
 
-## 📁 Estrutura do Projeto
+
