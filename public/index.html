@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Portal Gestão Escolar v3.2</title>
+    <title>Portal Gestão Escolar v3.5</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="imagens/brasao.png">
@@ -33,7 +33,7 @@
                         </svg>
                     </div>
                     <h1>Portal Escolar</h1>
-                    <p>Acesse com e-mail institucional</p>
+                    <p>Acesse com e-mail pessoal ou institucional</p>
                 </div>
                 
                 <div class="form-group">
@@ -93,8 +93,14 @@
                     <label>Perfil de Acesso</label>
                     <select id="reg-perfil" class="auth-input" required>
                         <option value="professor">Professor</option>
-                        <option value="coordenador">Coordenador</option>
+                        <option value="coordenador">Gestor Escolar</option>
+                        <option value="lider">Líder de Turma</option>
+                        <option value="vice-lider">Vice-líder de Turma</option>
+                        <option value="secretario">Secretário de Turma</option>
                     </select>
+                    <small style="color: #64748b; font-size: 0.7rem;">
+                        ⚠️ Líder/Vice/Secretário: use o mesmo nome cadastrado na lista de alunos
+                    </small>
                 </div>
                 
                 <div class="form-group">
@@ -118,7 +124,7 @@
                 
                 <p class="auth-switch">
                     Já tem conta? 
-                    <a href="javascript:void(0)" onclick="UI.toggleAuth('login')">Fazer Login</a>
+                    <a href="javascript:void(0)" onclick="UI.toggleAuth('login')">Realizar Login</a>
                 </p>
             </div>
         </div>
@@ -164,6 +170,7 @@
                 <div class="quick-access">
                     <h2 class="section-title">Acesso Rápido</h2>
                     <div class="cards-grid">
+                        <!-- Card Laboratórios -->
                         <div class="dashboard-card" onclick="Navigation.showSection('reservas')">
                             <div class="card-icon-wrapper">
                                 <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -173,12 +180,13 @@
                                 </svg>
                             </div>
                             <h3 class="card-title">Laboratórios</h3>
-                            <p class="card-description">Reserve e gerencie os laboratórios de Informática, Hardware e Multimídia</p>
+                            <p class="card-description">Reserve e gerencie os laboratórios do Lei, Hardware e Multimídia</p>
                             <div class="card-footer">
                                 <span class="card-link">Acessar →</span>
                             </div>
                         </div>
 
+                        <!-- Card Monitoria -->
                         <div class="dashboard-card" onclick="Navigation.showSection('monitoria')">
                             <div class="card-icon-wrapper">
                                 <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -188,12 +196,29 @@
                                 </svg>
                             </div>
                             <h3 class="card-title">Monitoria</h3>
-                            <p class="card-description">Gerencie a escala de monitores e postos de trabalho</p>
+                            <p class="card-description">Gerencie a escala de monitores e os postos de trabalho</p>
                             <div class="card-footer">
                                 <span class="card-link">Acessar →</span>
                             </div>
                         </div>
 
+                        <!-- Card Frequência -->
+                        <div class="dashboard-card" onclick="Navigation.showSection('frequencia')">
+                            <div class="card-icon-wrapper">
+                                <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                                    <rect x="9" y="3" width="6" height="4" rx="2"/>
+                                    <path d="M9 14l2 2 4-4"/>
+                                </svg>
+                            </div>
+                            <h3 class="card-title">Verificação de Faltosos</h3>
+                            <p class="card-description">Registre e acompanhe a frequência dos alunos por aula</p>
+                            <div class="card-footer">
+                                <span class="card-link">Acessar →</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Configurações (Coordenador) -->
                         <div class="dashboard-card coordenador-only" onclick="Navigation.showSection('cadastros')">
                             <div class="card-icon-wrapper">
                                 <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -202,7 +227,7 @@
                                 </svg>
                             </div>
                             <h3 class="card-title">Configurações</h3>
-                            <p class="card-description">Gerencie períodos letivos, relatórios e cadastros</p>
+                            <p class="card-description">Gerencie períodos letivos, relatórios, alunos e cadastros</p>
                             <div class="card-footer">
                                 <span class="card-link">Acessar →</span>
                             </div>
@@ -314,7 +339,7 @@
                                         <rect x="2" y="3" width="20" height="14" rx="2"/>
                                     </svg>
                                 </span>
-                                <span class="lab-name">Informática</span>
+                                <span class="lab-name">Laboratório Lei</span>
                             </button>
                             <button class="btn-lab" onclick="Reservations.changeLab('Lab Hardware', this)">
                                 <span class="lab-icon">
@@ -324,7 +349,7 @@
                                         <circle cx="16" cy="10" r="2"/>
                                     </svg>
                                 </span>
-                                <span class="lab-name">Hardware</span>
+                                <span class="lab-name">Laboratório Hardware</span>
                             </button>
                             <button class="btn-lab" onclick="Reservations.changeLab('Lab Multimídia', this)">
                                 <span class="lab-icon">
@@ -333,7 +358,7 @@
                                         <path d="M8 12h8M12 8v8"/>
                                     </svg>
                                 </span>
-                                <span class="lab-name">Multimídia</span>
+                                <span class="lab-name">Laboratório Multimídia</span>
                             </button>
                         </div>
                         
@@ -459,6 +484,18 @@
                 </div>
             </div>
 
+            <!-- Seção de Frequência -->
+            <div id="sec-frequencia" class="app-section">
+                <div class="section-header">
+                    <button class="back-link" onclick="Navigation.goBack()">
+                        ← Voltar
+                    </button>
+                    <h2>Verificação de Faltosos</h2>
+                </div>
+                
+                <div id="frequencia-content"></div>
+            </div>
+
             <!-- Seção de Configurações -->
             <div id="sec-cadastros" class="app-section">
                 <div class="section-header">
@@ -528,7 +565,7 @@
                         <span class="card-badge">Gestor</span>
                     </div>
                     <p class="config-description">
-                        Gere relatórios detalhados de uso dos laboratórios e monitores.
+                        Gere relatórios detalhados de uso dos laboratórios, monitores e frequência.
                     </p>
                     
                     <div class="relatorio-opcoes">
@@ -572,6 +609,19 @@
                             Exportar Backup
                         </button>
                     </div>
+                </div>
+                
+                <!-- Alunos por Turma -->
+                <div class="config-card alunos-card coordenador-only">
+                    <div class="card-header">
+                        <h3>Alunos por Turma</h3>
+                        <span class="card-badge">Gestor</span>
+                    </div>
+                    <p class="config-description">
+                        Cadastre os alunos de cada turma e defina os líderes, vice-líderes e secretários.
+                    </p>
+                    
+                    <div id="alunos-content"></div>
                 </div>
                 
                 <!-- Cards de Cadastro -->
@@ -621,6 +671,8 @@
     <script src="js/modules/relatorios.js"></script>
     <script src="js/modules/calendar.js"></script>
     <script src="js/modules/reservations.js"></script>
+    <script src="js/modules/alunos.js"></script>
+    <script src="js/modules/frequencia.js"></script>
     <script src="js/modules/navigation.js"></script>
     <script src="js/modules/ui.js"></script>
     <script src="js/modules/config.js"></script>

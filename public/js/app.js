@@ -1,6 +1,7 @@
 // ============================================
 // APP.JS - Arquivo Principal
 // Versão Corrigida - Sem Emojis, Visual Profissional
+// Atualização: Módulos de Alunos e Frequência
 // ============================================
 
 // Inicialização quando o DOM estiver pronto
@@ -34,6 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Calendar inicializado');
         }
 
+        if (typeof Alunos !== 'undefined') {
+            Alunos.init();
+            console.log('Alunos inicializado');
+        }
+
+        if (typeof Frequencia !== 'undefined') {
+            Frequencia.init();
+            console.log('Frequencia inicializado');
+        }
+
         // Verificar sessão
         const sessao = localStorage.getItem('portal_sessao');
         
@@ -56,7 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Mostrar nome do usuário no cabeçalho
                     const userInfo = document.getElementById('user-info');
                     if (userInfo && dados.usuario) {
-                        const perfilTexto = dados.usuario.perfil === 'coordenador' ? 'Coordenador' : 'Professor';
+                        const perfilTexto = Auth.getNomePerfil ? 
+                            Auth.getNomePerfil(dados.usuario.perfil) : 
+                            (dados.usuario.perfil === 'coordenador' ? 'Gestor' : 'Professor');
                         userInfo.innerText = `${perfilTexto}: ${dados.usuario.nome}`;
                     }
                     
@@ -70,9 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         Auth.aplicarPermissoes(dados.usuario.perfil);
                     }
                     
-                    // Mostrar seção inicial
+                    // Redirecionar baseado no perfil
                     if (typeof Navigation !== 'undefined') {
-                        Navigation.showSection('menu');
+                        if (['lider', 'vice-lider', 'secretario'].includes(dados.usuario.perfil)) {
+                            // Líderes vão direto para frequência
+                            Navigation.showSection('frequencia');
+                        } else {
+                            Navigation.showSection('menu');
+                        }
                     }
                     
                     console.log('Sessão restaurada para:', dados.usuario?.nome);
@@ -115,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Atualiza o nome do usuário na interface
  * @param {string} nome - Nome do usuário
- * @param {string} perfil - Perfil do usuário (coordenador ou professor)
+ * @param {string} perfil - Perfil do usuário (coordenador, professor, lider, vice-lider, secretario)
  */
 function atualizarNomeUsuario(nome, perfil) {
     // Atualizar o span no hero banner
@@ -127,7 +145,7 @@ function atualizarNomeUsuario(nome, perfil) {
     // Também atualizar o elemento específico se existir
     const welcomeUser = document.getElementById('welcome-user');
     if (welcomeUser) {
-        welcomeUser.innerText = `Ola, ${nome}!`;
+        welcomeUser.innerText = `Olá, ${nome}!`;
     }
     
     // Atualizar o título do menu inicial (legado)
@@ -162,6 +180,18 @@ function atualizarInfoRapida() {
         const turmas = Database.getData('turmas') || [];
         turmasCount.textContent = turmas.length;
     }
+
+    // Contagem de alunos (novo)
+    const alunosCount = document.getElementById('alunos-count');
+    if (alunosCount && typeof Database !== 'undefined') {
+        const todasTurmas = Database.getData('turmas') || [];
+        let totalAlunos = 0;
+        todasTurmas.forEach(turma => {
+            const alunos = Database.getAlunosPorTurma(turma);
+            totalAlunos += alunos.length;
+        });
+        alunosCount.textContent = totalAlunos;
+    }
 }
 
 // Fechar menu de contexto ao clicar fora
@@ -170,12 +200,20 @@ window.onclick = (e) => {
     if (menu && !e.target.closest('#custom-menu')) {
         menu.style.display = 'none';
     }
+    
+    // Fechar modais ao clicar fora (overlay)
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.remove();
+    }
 };
 
 // Prevenir menu de contexto padrão no calendário
 window.oncontextmenu = (e) => {
     if (e.target.closest('.calendar-day') && !e.target.closest('.empty')) {
-        e.preventDefault();
+        const usuario = typeof Auth !== 'undefined' ? Auth.getUsuarioAtual() : null;
+        if (usuario && usuario.perfil === 'coordenador') {
+            e.preventDefault();
+        }
     }
 };
 
@@ -183,9 +221,9 @@ window.oncontextmenu = (e) => {
 function exportarDados() {
     if (typeof Database === 'undefined' || typeof Database.exportarBackup !== 'function') {
         if (typeof UI !== 'undefined') {
-            UI.showNotification('Erro: Modulo Database nao disponivel', 'erro');
+            UI.showNotification('Erro: Módulo Database não disponível', 'erro');
         } else {
-            alert('Erro: Modulo Database nao disponivel');
+            alert('Erro: Módulo Database não disponível');
         }
         return;
     }
@@ -224,7 +262,15 @@ function importarDados() {
                 if (typeof UI !== 'undefined') {
                     UI.showConfirmModal(
                         'Importar Backup',
-                        'Tem certeza que deseja importar este backup?<br><br><span style="color: #dc2626;">Esta acao substituira todos os dados atuais!</span>',
+                        'Tem certeza que deseja importar este backup?<br><br>' +
+                        '<span style="color: #dc2626;">Esta ação substituirá todos os dados atuais!</span><br><br>' +
+                        '<strong>Dados que serão importados:</strong><br>' +
+                        '• Professores e Turmas<br>' +
+                        '• Monitores<br>' +
+                        '• Alunos e Frequências<br>' +
+                        '• Reservas e Escalas<br>' +
+                        '• Períodos Letivos<br>' +
+                        '• Usuários do sistema',
                         () => {
                             if (typeof Database !== 'undefined' && Database.importarBackup) {
                                 const resultado = Database.importarBackup(backup);
@@ -241,7 +287,7 @@ function importarDados() {
             } catch (error) {
                 console.error('Erro ao ler arquivo:', error);
                 if (typeof UI !== 'undefined') {
-                    UI.showNotification('Arquivo de backup invalido!', 'erro');
+                    UI.showNotification('Arquivo de backup inválido!', 'erro');
                 }
             }
         };
@@ -253,14 +299,27 @@ function importarDados() {
 
 // ===== FUNÇÃO PARA LIMPAR DADOS =====
 function limparDadosSistema() {
-    if (typeof Database !== 'undefined' && Database.limparDados) {
-        Database.limparDados();
-    } else if (typeof UI !== 'undefined') {
+    if (typeof UI !== 'undefined') {
         UI.showConfirmModal(
             'Limpar Todos os Dados',
-            'Tem certeza que deseja limpar todos os dados do sistema?<br><br><span style="color: #dc2626; font-weight: bold;">Esta acao nao pode ser desfeita!</span>',
+            'Tem certeza que deseja limpar todos os dados do sistema?<br><br>' +
+            '<span style="color: #dc2626; font-weight: bold;">Esta ação não pode ser desfeita!</span><br><br>' +
+            'Serão removidos:<br>' +
+            '• Todos os cadastros<br>' +
+            '• Todas as reservas<br>' +
+            '• Todos os alunos e frequências<br>' +
+            '• Todos os usuários (exceto coordenador padrão)',
             () => {
+                // Manter apenas o coordenador padrão
+                const usuarios = JSON.parse(localStorage.getItem('portal_usuarios') || '[]');
+                const coordenadorPadrao = usuarios.find(u => u.perfil === 'coordenador');
+                
                 localStorage.clear();
+                
+                if (coordenadorPadrao) {
+                    localStorage.setItem('portal_usuarios', JSON.stringify([coordenadorPadrao]));
+                }
+                
                 window.location.reload();
             }
         );
@@ -276,6 +335,33 @@ function alternarTema() {
     localStorage.setItem('portal_tema', novoTema);
 }
 
+// ===== FUNÇÃO PARA EXPORTAR RELATÓRIO DE FREQUÊNCIA =====
+function exportarRelatorioFrequencia() {
+    const data = document.getElementById('freq-data-input')?.value || new Date().toISOString().split('T')[0];
+    const faltosos = typeof Database !== 'undefined' ? Database.getFaltososDoDia(data) : [];
+    
+    let csv = 'Turma;Aluno;Matrícula;Status;Faltas-Aula;Justificativa\n';
+    
+    faltosos.forEach(turma => {
+        turma.faltosos.forEach(item => {
+            csv += `${turma.turma};${item.aluno.nome};${item.aluno.matricula};FALTA;${item.frequencia.resumo.faltas};${item.frequencia.justificativa || ''}\n`;
+        });
+        turma.atrasados.forEach(item => {
+            csv += `${turma.turma};${item.aluno.nome};${item.aluno.matricula};ATRASO;${item.frequencia.resumo.faltas};${item.frequencia.justificativa || ''}\n`;
+        });
+    });
+    
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `faltosos_${data}.csv`;
+    link.click();
+    
+    if (typeof UI !== 'undefined') {
+        UI.showNotification('Relatório de faltosos exportado!', 'sucesso');
+    }
+}
+
 // ===== GLOBAL EXPORTS =====
 window.Auth = Auth;
 window.Database = Database;
@@ -284,6 +370,8 @@ window.Periodos = Periodos;
 window.Relatorios = Relatorios;
 window.Calendar = Calendar;
 window.Reservations = Reservations;
+window.Alunos = Alunos;
+window.Frequencia = Frequencia;
 window.Navigation = Navigation;
 window.UI = UI;
 window.exportarDados = exportarDados;
@@ -291,19 +379,34 @@ window.importarDados = importarDados;
 window.limparDadosSistema = limparDadosSistema;
 window.atualizarInfoRapida = atualizarInfoRapida;
 window.atualizarNomeUsuario = atualizarNomeUsuario;
+window.exportarRelatorioFrequencia = exportarRelatorioFrequencia;
 
 // ===== VERSÃO DO SISTEMA =====
 const SISTEMA = {
-    nome: 'Portal Gestao Escolar',
-    versao: '3.2',
+    nome: 'Portal Gestão Escolar',
+    versao: '3.5',
     autor: 'JarmisonJr',
-    ano: new Date().getFullYear()
+    ano: new Date().getFullYear(),
+    modulos: [
+        'Auth',
+        'Database', 
+        'Turmas',
+        'Periodos',
+        'Relatorios',
+        'Calendar',
+        'Reservations',
+        'Alunos',
+        'Frequencia',
+        'Navigation',
+        'UI'
+    ]
 };
 
 console.log(`
 ==========================================
    ${SISTEMA.nome} v${SISTEMA.versao}
-   (c) ${SISTEMA.ano} ${SISTEMA.autor}
+   © ${SISTEMA.ano} ${SISTEMA.autor}
+   Módulos: ${SISTEMA.modulos.length}
 ==========================================
 `);
 
@@ -316,7 +419,37 @@ function verificarAtualizacoes() {
     // Verificar uma vez por dia
     if (!ultimaVerificacao || (agora - parseInt(ultimaVerificacao)) > 86400000) {
         localStorage.setItem('ultima_verificacao', agora.toString());
-        console.log('Sistema atualizado na versao', versaoAtual);
+        console.log('Sistema atualizado na versão', versaoAtual);
+        
+        // Verificar integridade dos dados
+        verificarIntegridadeDados();
+    }
+}
+
+// ===== VERIFICAÇÃO DE INTEGRIDADE DOS DADOS =====
+function verificarIntegridadeDados() {
+    try {
+        const turmas = typeof Database !== 'undefined' ? Database.getData('turmas') : [];
+        const alunos = typeof Database !== 'undefined' ? Database.getAlunos() : {};
+        
+        // Verificar se há alunos em turmas que não existem mais
+        const turmasExistentes = new Set(turmas);
+        let inconsistencias = 0;
+        
+        Object.keys(alunos).forEach(turma => {
+            if (!turmasExistentes.has(turma)) {
+                console.warn(`⚠️ Alunos encontrados em turma inexistente: ${turma}`);
+                inconsistencias++;
+            }
+        });
+        
+        if (inconsistencias > 0) {
+            console.warn(`Total de ${inconsistencias} inconsistências encontradas nos dados.`);
+        } else {
+            console.log('✅ Dados íntegros - nenhuma inconsistência encontrada.');
+        }
+    } catch (e) {
+        console.error('Erro ao verificar integridade:', e);
     }
 }
 

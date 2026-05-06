@@ -2,6 +2,7 @@
    MAIN.CSS - Tema Institucional Azul e Branco
    Design Profissional e Elegante
    SEM SIDEBAR - Layout Centralizado
+   Atualização: Módulos de Alunos e Frequência
    ============================================ */
 
 * {
@@ -694,6 +695,29 @@ label {
 
 .input-group {
     position: relative;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    margin-top: 0.25rem;
+}
+
+.form-hint code {
+    background: var(--gray-200);
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
 }
 
 /* ===== LISTAS ===== */
@@ -1395,16 +1419,6 @@ tr:hover td {
     font-size: 0.875rem;
 }
 
-.form-group {
-    margin-bottom: 1.25rem;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
 .modal-footer {
     display: flex;
     gap: 0.75rem;
@@ -1412,6 +1426,26 @@ tr:hover td {
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid var(--gray-200);
+}
+
+.modal-turma-info {
+    color: var(--gray-600);
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+    padding: 0.5rem;
+    background: var(--gray-100);
+    border-radius: var(--border-radius);
+}
+
+.modal-aluno-info {
+    color: var(--gray-700);
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    padding: 0.75rem;
+    background: var(--gray-100);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary);
 }
 
 /* ===== NOTIFICAÇÕES ===== */
@@ -1605,6 +1639,581 @@ tr:hover td {
     width: auto;
 }
 
+/* ============================================
+   NOVOS ESTILOS: MÓDULO DE ALUNOS
+   ============================================ */
+
+.alunos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.alunos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.alunos-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.alunos-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.alunos-controls .form-group {
+    margin-bottom: 0;
+    min-width: 200px;
+}
+
+.alunos-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+}
+
+.alunos-total {
+    font-size: 0.875rem;
+    color: var(--gray-700);
+}
+
+.alunos-lideranca {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.lideranca-item {
+    font-size: 0.8125rem;
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.lideranca-item strong {
+    color: var(--gray-800);
+}
+
+.alunos-lista-container {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+}
+
+.alunos-tabela-wrapper {
+    overflow-x: auto;
+}
+
+.alunos-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.alunos-tabela th {
+    background: var(--gray-100);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--gray-700);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--gray-300);
+    white-space: nowrap;
+}
+
+.alunos-tabela td {
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-800);
+    vertical-align: middle;
+}
+
+.alunos-tabela tr:last-child td {
+    border-bottom: none;
+}
+
+.alunos-tabela tr:hover td {
+    background: var(--gray-50);
+}
+
+.aluno-row.inativo {
+    opacity: 0.5;
+}
+
+.aluno-row.inativo:hover td {
+    opacity: 0.7;
+}
+
+.matricula-badge {
+    background: var(--gray-200);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    font-family: monospace;
+}
+
+.aluno-nome {
+    font-weight: 500;
+    color: var(--gray-800);
+}
+
+.funcao-badge-mini {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.funcao-texto {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+}
+
+.funcao-lider {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.funcao-vice-lider {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.funcao-secretario {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.funcao-aluno {
+    color: var(--gray-600);
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.status-ativo {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-inativo {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.aluno-acoes {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.aluno-acoes .btn-small {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.7rem;
+}
+
+.alunos-export {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+/* ============================================
+   NOVOS ESTILOS: MÓDULO DE FREQUÊNCIA
+   ============================================ */
+
+.frequencia-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.frequencia-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.frequencia-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.frequencia-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.frequencia-controls .form-group {
+    margin-bottom: 0;
+    min-width: 180px;
+}
+
+.frequencia-resumo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.resumo-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 1.25rem;
+    text-align: center;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+}
+
+.resumo-numero {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.resumo-label {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.resumo-presentes .resumo-numero {
+    color: var(--success);
+}
+
+.resumo-faltosos .resumo-numero {
+    color: var(--danger);
+}
+
+.resumo-atrasos .resumo-numero {
+    color: var(--warning);
+}
+
+.resumo-total .resumo-numero {
+    color: var(--primary);
+}
+
+.frequencia-acoes-rapidas {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.frequencia-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.frequencia-item {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.15s ease;
+}
+
+.frequencia-item:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.frequencia-item.status-presente {
+    border-left: 4px solid var(--success);
+}
+
+.frequencia-item.status-falta {
+    border-left: 4px solid var(--danger);
+}
+
+.frequencia-item.status-atraso {
+    border-left: 4px solid var(--warning);
+}
+
+.frequencia-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    user-select: none;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.frequencia-item-header:hover {
+    background: var(--gray-50);
+}
+
+.frequencia-aluno-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.frequencia-status-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.frequencia-aluno-nome {
+    font-weight: 600;
+    color: var(--gray-800);
+    display: block;
+    font-size: 0.875rem;
+}
+
+.frequencia-aluno-matricula {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    font-family: monospace;
+}
+
+.funcao-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.frequencia-aluno-status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.status-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.status-text.status-presente {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-text.status-falta {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-text.status-atraso {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.frequencia-detalhes {
+    padding: 0 1rem 1rem 1rem;
+    border-top: 1px solid var(--gray-100);
+}
+
+.aulas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.aula-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.7rem;
+    gap: 0.15rem;
+}
+
+.aula-item.aula-presente {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.aula-item.aula-falta {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.aula-numero {
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.aula-horario {
+    font-size: 0.6rem;
+    color: var(--gray-500);
+}
+
+.aula-status-icon {
+    font-size: 0.9rem;
+}
+
+.frequencia-justificativa {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: #fffbeb;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    color: var(--gray-700);
+    border: 1px solid #fde68a;
+}
+
+.frequencia-registrado-por {
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    text-align: right;
+}
+
+/* ===== MODAL DE FREQUÊNCIA ===== */
+.modal-frequencia {
+    max-width: 600px;
+}
+
+.modal-frequencia-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.frequencia-rapida {
+    padding: 1rem;
+    background: var(--gray-100);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+}
+
+.frequencia-rapida h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--gray-800);
+}
+
+.frequencia-manual h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--gray-800);
+}
+
+.aulas-edicao-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.aula-edicao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--gray-50);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-200);
+    gap: 1rem;
+}
+
+.aula-edicao-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.aula-edicao-numero {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--gray-800);
+}
+
+.aula-edicao-horario {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+}
+
+.aula-edicao-radios {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius);
+    transition: all 0.15s ease;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.radio-presente {
+    background: #f0fdf4;
+    color: #065f46;
+}
+
+.radio-presente:hover {
+    background: #d1fae5;
+}
+
+.radio-falta {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.radio-falta:hover {
+    background: #fee2e2;
+}
+
+.radio-label input[type="radio"] {
+    width: auto;
+}
+
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 1200px) {
     .reservas-layout,
@@ -1710,6 +2319,73 @@ tr:hover td {
     .welcome-title {
         font-size: 1.5rem;
     }
+
+    .alunos-header,
+    .frequencia-header {
+        flex-direction: column;
+    }
+
+    .alunos-controls,
+    .frequencia-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .alunos-controls .form-group,
+    .frequencia-controls .form-group {
+        width: 100%;
+    }
+
+    .alunos-info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .alunos-lideranca {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .frequencia-resumo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .frequencia-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .frequencia-aluno-status {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .aulas-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .aula-edicao-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .aula-edicao-radios {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .alunos-export {
+        flex-direction: column;
+    }
+
+    .alunos-export .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-frequencia {
+        max-width: 95%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1751,6 +2427,14 @@ tr:hover td {
         text-align: center;
     }
     
+    .input-action {
+        flex-direction: column;
+    }
+    
+    .btn-add {
+        width: 100%;
+    }
+    
     .add-monitor-form {
         flex-direction: column;
     }
@@ -1765,6 +2449,22 @@ tr:hover td {
     
     .form-row {
         grid-template-columns: 1fr;
+    }
+
+    .frequencia-resumo {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .aulas-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .aluno-acoes {
+        flex-direction: column;
+    }
+
+    .aluno-acoes .btn-small {
+        width: 100%;
     }
 }
 

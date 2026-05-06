@@ -1,6 +1,6 @@
 // ============================================
 // AUTH.JS - Sistema de Autenticacao com Perfis
-// Versao: Sincronizacao Automatica de Professores
+// Versao: Sincronizacao Automatica + Perfis de Lideranca
 // ============================================
 
 const Auth = (function() {
@@ -102,12 +102,41 @@ const Auth = (function() {
                 Database.adicionarProfessorPorLogin(usuario.nome);
             }
             
+            // SE FOR LIDER/VICE/SECRETARIO, verificar se existe nos alunos
+            if (['lider', 'vice-lider', 'secretario'].includes(usuario.perfil)) {
+                verificarVinculoLideranca(usuario);
+            }
+            
             criarSessao(usuario);
             atualizarUltimoAcesso(usuario, usuarios);
             entrarSistema(usuario);
         } else {
             console.log('Usuario nao encontrado ou senha invalida');
             mostrarMensagem('E-mail ou senha invalidos!', 'erro');
+        }
+    }
+
+    function verificarVinculoLideranca(usuario) {
+        // Verificar se o usuário está cadastrado como aluno com função de liderança
+        const todasTurmas = typeof Database !== 'undefined' ? Database.getData('turmas') : [];
+        let encontrado = false;
+
+        for (const turma of todasTurmas) {
+            const alunos = typeof Database !== 'undefined' ? Database.getAlunosPorTurma(turma) : [];
+            const aluno = alunos.find(a => 
+                a.nome.toLowerCase() === usuario.nome.toLowerCase() &&
+                a.funcao === usuario.perfil
+            );
+
+            if (aluno) {
+                console.log(`✅ ${usuario.nome} confirmado como ${usuario.perfil} da turma ${turma}`);
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            console.warn(`⚠️ ${usuario.nome} está logando como ${usuario.perfil} mas não foi encontrado nos alunos`);
         }
     }
 
@@ -152,6 +181,33 @@ const Auth = (function() {
         if (usuarios.find(u => u.email === email)) {
             mostrarMensagem('Este e-mail ja esta cadastrado!', 'erro');
             return;
+        }
+
+        // Validar perfil de liderança
+        if (['lider', 'vice-lider', 'secretario'].includes(perfil)) {
+            const todasTurmas = typeof Database !== 'undefined' ? Database.getData('turmas') : [];
+            let encontrado = false;
+
+            for (const turma of todasTurmas) {
+                const alunos = typeof Database !== 'undefined' ? Database.getAlunosPorTurma(turma) : [];
+                const aluno = alunos.find(a => 
+                    a.nome.toLowerCase() === nome.toLowerCase() &&
+                    a.funcao === perfil
+                );
+
+                if (aluno) {
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                mostrarMensagem(
+                    `Você precisa ser cadastrado como ${getNomePerfil(perfil)} na lista de alunos primeiro!`,
+                    'erro'
+                );
+                return;
+            }
         }
 
         const novoUsuario = {
@@ -246,7 +302,7 @@ const Auth = (function() {
         // Atualizar nome do usuario no cabecalho
         const userInfo = document.getElementById('user-info');
         if (userInfo) {
-            const perfilTexto = usuario.perfil === 'coordenador' ? 'Coordenador' : 'Professor';
+            const perfilTexto = getNomePerfil(usuario.perfil);
             userInfo.innerText = `${perfilTexto}: ${usuario.nome}`;
         }
 
@@ -269,11 +325,17 @@ const Auth = (function() {
         // Aplicar perfil ao body
         document.body.setAttribute('data-perfil', usuario.perfil);
 
-        // Mostrar/esconder elementos especificos por perfil
+        // Aplicar permissoes
         aplicarPermissoes(usuario.perfil);
 
+        // Redirecionar baseado no perfil
         if (typeof Navigation !== 'undefined') {
-            Navigation.showSection('menu');
+            if (['lider', 'vice-lider', 'secretario'].includes(usuario.perfil)) {
+                // Líderes vão direto para frequência
+                Navigation.showSection('frequencia');
+            } else {
+                Navigation.showSection('menu');
+            }
         }
         
         // Atualizar informacoes rapidas
@@ -284,40 +346,72 @@ const Auth = (function() {
 
     function aplicarPermissoes(perfil) {
         const elementosAdmin = document.querySelectorAll('.coordenador-only');
+        const elementosProfessor = document.querySelectorAll('.professor-only');
+        const elementosLideranca = document.querySelectorAll('.lideranca-only');
         const isCoordenador = (perfil === 'coordenador');
+        const isProfessor = (perfil === 'professor');
+        const isLideranca = ['lider', 'vice-lider', 'secretario'].includes(perfil);
         
+        // Elementos exclusivos do coordenador
         elementosAdmin.forEach(el => {
-            el.style.display = isCoordenador ? 'block' : 'none';
+            el.style.display = isCoordenador ? '' : 'none';
         });
 
-        // Ajustar elementos especificos do menu
+        // Elementos exclusivos do professor
+        elementosProfessor.forEach(el => {
+            el.style.display = isProfessor ? '' : 'none';
+        });
+
+        // Elementos exclusivos da liderança
+        elementosLideranca.forEach(el => {
+            el.style.display = isLideranca ? '' : 'none';
+        });
+
+        // Cards do menu para coordenador
         const cardsCoordenador = document.querySelectorAll('.dashboard-card.coordenador-only');
         cardsCoordenador.forEach(card => {
-            card.style.display = isCoordenador ? 'block' : 'none';
+            card.style.display = isCoordenador ? '' : 'none';
         });
 
+        // Se for liderança, mostrar cabeçalho simplificado
+        const headerRight = document.querySelector('.header-right');
+        const navLinks = document.querySelectorAll('.nav-links li');
+        
+        if (isLideranca) {
+            // Esconder navegação completa para líderes
+            navLinks.forEach(link => {
+                const linkText = link.textContent.toLowerCase();
+                if (!linkText.includes('frequência') && !linkText.includes('faltosos')) {
+                    link.style.display = 'none';
+                }
+            });
+        } else {
+            navLinks.forEach(link => {
+                link.style.display = '';
+            });
+        }
+
+        // Mensagem para professor
         if (perfil === 'professor') {
-            // Desabilitar inputs de cadastro para professores
             const secCadastros = document.getElementById('sec-cadastros');
             if (secCadastros) {
-                const inputs = secCadastros.querySelectorAll('input, button, select');
+                const inputs = secCadastros.querySelectorAll('input:not([type="hidden"]), button:not(.back-link), select');
                 inputs.forEach(el => {
                     if (!el.classList.contains('back-link') && !el.closest('.back-link')) {
                         el.disabled = true;
+                        el.style.opacity = '0.6';
                     }
                 });
                 
-                // Adicionar mensagem para professor
                 if (!document.getElementById('professor-msg')) {
                     const msg = document.createElement('div');
                     msg.id = 'professor-msg';
                     msg.className = 'professor-message';
-                    msg.innerHTML = '<strong>Professor</strong> - Voce esta logado como Professor. Apenas coordenadores podem gerenciar cadastros.';
+                    msg.innerHTML = '<strong>Professor</strong> - Você está logado como Professor. Apenas coordenadores podem gerenciar cadastros.';
                     secCadastros.insertBefore(msg, secCadastros.firstChild);
                 }
             }
         } else {
-            // Remover mensagem e habilitar inputs para coordenador
             const msg = document.getElementById('professor-msg');
             if (msg) msg.remove();
             
@@ -326,6 +420,7 @@ const Auth = (function() {
                 const inputs = secCadastros.querySelectorAll('input, button, select');
                 inputs.forEach(el => {
                     el.disabled = false;
+                    el.style.opacity = '';
                 });
             }
         }
@@ -366,6 +461,17 @@ const Auth = (function() {
         }, 3000);
     }
 
+    function getNomePerfil(perfil) {
+        const nomes = {
+            'coordenador': 'Gestor',
+            'professor': 'Professor',
+            'lider': 'Líder',
+            'vice-lider': 'Vice-líder',
+            'secretario': 'Secretário'
+        };
+        return nomes[perfil] || perfil;
+    }
+
     function getUsuarioAtual() {
         const sessao = localStorage.getItem(STORAGE_KEYS.SESSAO);
         if (!sessao) return null;
@@ -387,6 +493,31 @@ const Auth = (function() {
         return usuario && usuario.perfil === 'professor';
     }
 
+    function isLideranca() {
+        const usuario = getUsuarioAtual();
+        return usuario && ['lider', 'vice-lider', 'secretario'].includes(usuario.perfil);
+    }
+
+    function getTurmaDoLider() {
+        const usuario = getUsuarioAtual();
+        if (!usuario || !['lider', 'vice-lider', 'secretario'].includes(usuario.perfil)) {
+            return null;
+        }
+
+        const todasTurmas = typeof Database !== 'undefined' ? Database.getData('turmas') : [];
+        
+        for (const turma of todasTurmas) {
+            const alunos = typeof Database !== 'undefined' ? Database.getAlunosPorTurma(turma) : [];
+            const aluno = alunos.find(a => 
+                a.nome.toLowerCase() === usuario.nome.toLowerCase() &&
+                a.funcao === usuario.perfil
+            );
+            if (aluno) return turma;
+        }
+
+        return null;
+    }
+
     // ===== GERENCIAMENTO DE USUARIOS (PARA COORDENADOR) =====
     function listarUsuarios() {
         return carregarUsuarios();
@@ -405,7 +536,6 @@ const Auth = (function() {
             return false;
         }
         
-        // Nao permitir remover o ultimo coordenador
         const coordenadores = usuarios.filter(u => u.perfil === 'coordenador');
         if (usuarios[index].perfil === 'coordenador' && coordenadores.length <= 1) {
             mostrarMensagem('Nao e possivel remover o ultimo coordenador!', 'erro');
@@ -444,6 +574,9 @@ const Auth = (function() {
         getUsuarioAtual,
         isCoordenador,
         isProfessor,
+        isLideranca,
+        getTurmaDoLider,
+        getNomePerfil,
         aplicarPermissoes,
         listarUsuarios,
         removerUsuario,

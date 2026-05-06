@@ -1,6 +1,6 @@
 // ============================================
 // NAVIGATION.JS - Navegação entre Seções
-// Versão Completa e Corrigida
+// Versão Completa com Alunos e Frequência
 // ============================================
 
 const Navigation = (function() {
@@ -21,6 +21,10 @@ const Navigation = (function() {
             targetId = 'sec-reservas';
         } else if (id === 'monitoria') {
             targetId = 'sec-monitoria';
+        } else if (id === 'frequencia') {
+            targetId = 'sec-frequencia';
+        } else if (id === 'alunos') {
+            targetId = 'sec-alunos';
         } else if (id.startsWith('sec-')) {
             targetId = id;
         } else {
@@ -44,6 +48,12 @@ const Navigation = (function() {
                     break;
                 case 'menu':
                     initMenu();
+                    break;
+                case 'frequencia':
+                    initFrequencia();
+                    break;
+                case 'alunos':
+                    initAlunos();
                     break;
             }
             
@@ -111,6 +121,28 @@ const Navigation = (function() {
             updateWelcomeUser();
         } catch (error) {
             console.error('❌ Erro no menu:', error);
+        }
+    }
+
+    function initFrequencia() {
+        console.log('🔄 Inicializando Frequência...');
+        try {
+            if (typeof Frequencia !== 'undefined') {
+                Frequencia.renderizarTelaFrequencia();
+            }
+        } catch (error) {
+            console.error('❌ Erro na frequência:', error);
+        }
+    }
+
+    function initAlunos() {
+        console.log('🔄 Inicializando Alunos...');
+        try {
+            if (typeof Alunos !== 'undefined') {
+                Alunos.renderizarTelaAlunos();
+            }
+        } catch (error) {
+            console.error('❌ Erro nos alunos:', error);
         }
     }
 
@@ -208,7 +240,14 @@ const Navigation = (function() {
     }
 
     function goBack() {
-        showSection('menu');
+        const usuario = typeof Auth !== 'undefined' ? Auth.getUsuarioAtual() : null;
+        
+        // Se for liderança, não volta ao menu (fica na frequência)
+        if (usuario && ['lider', 'vice-lider', 'secretario'].includes(usuario.perfil)) {
+            showSection('frequencia');
+        } else {
+            showSection('menu');
+        }
     }
 
     function getCurrentSection() {
@@ -219,6 +258,8 @@ const Navigation = (function() {
         if (id === 'sec-reservas') return 'reservas';
         if (id === 'sec-monitoria') return 'monitoria';
         if (id === 'sec-cadastros') return 'cadastros';
+        if (id === 'sec-frequencia') return 'frequencia';
+        if (id === 'sec-alunos') return 'alunos';
         return id;
     }
 
@@ -234,7 +275,9 @@ const Navigation = (function() {
         initMonitoria,
         initCadastros,
         initReservas,
-        initMenu
+        initMenu,
+        initFrequencia,
+        initAlunos
     };
 })();
 
