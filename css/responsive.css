@@ -1,0 +1,193 @@
+/* ============================================
+   RESPONSIVE.CSS - Media Queries
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .reservas-layout,
+    .monitoria-layout {
+        flex-direction: column;
+    }
+    .lab-sidebar-fixed {
+        width: 100%;
+        position: static;
+        order: -1;
+        margin-bottom: 1rem;
+    }
+    .lab-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .btn-lab {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+@media (max-width: 1024px) {
+    .config-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+        padding: 1rem;
+    }
+    .main-viewport {
+        margin-left: 0;
+        padding: 1rem;
+        width: 100%;
+    }
+    #sys-header {
+        margin-left: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    .nav-header {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .nav-links li {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+    }
+    .logout-btn {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .calendar-controls {
+        flex-direction: column;
+    }
+    .periodos-acoes-rapidas {
+        flex-direction: column;
+    }
+    .periodos-acoes-rapidas .btn-small {
+        width: 100%;
+    }
+    .relatorio-opcoes {
+        grid-template-columns: 1fr;
+    }
+    .relatorio-actions {
+        flex-direction: column;
+    }
+    .auth-box {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    .confirm-modal-actions {
+        flex-direction: column;
+    }
+    .confirm-modal-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-viewport {
+        padding: 0.75rem;
+    }
+    .section-header h2 {
+        font-size: 1.25rem;
+    }
+    .calendar-day {
+        font-size: 0.7rem;
+    }
+    .btn-lab {
+        flex: 1 1 100%;
+    }
+    .config-card {
+        padding: 1rem;
+    }
+    .periodo-acoes {
+        flex-direction: column;
+    }
+    .periodo-acoes .btn-small {
+        width: 100%;
+    }
+    .back-link {
+        width: 100%;
+        text-align: center;
+    }
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+    .input-action {
+        flex-direction: column;
+    }
+    .btn-add {
+        width: 100%;
+    }
+    .add-monitor-form {
+        flex-direction: column;
+    }
+    .btn-add-monitor {
+        width: 100%;
+    }
+    .modal-box {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .calendar-weekdays {
+        font-size: 0.6rem;
+    }
+    .calendar-day {
+        font-size: 0.65rem;
+    }
+    .auth-box {
+        padding: 1rem;
+    }
+    .confirm-modal {
+        padding: 1rem;
+    }
+}
+
+@media print {
+    .sidebar,
+    .auth-overlay,
+    .btn-primary,
+    .btn-secondary,
+    .back-link,
+    .logout-btn,
+    .btn-save,
+    .btn-lab,
+    .lab-sidebar-fixed,
+    .custom-context-menu,
+    .modal-overlay,
+    .confirm-modal-overlay,
+    #sys-header {
+        display: none !important;
+    }
+    .main-viewport {
+        margin: 0;
+        padding: 0.5rem;
+    }
+    table {
+        border: 1px solid #000;
+    }
+    th, td {
+        border: 1px solid #000;
+    }
+}
