@@ -4,6 +4,7 @@ Sistema profissional para gestão de laboratórios, monitoria e calendário esco
 
 ## Link
 -https://projeto-integrador-23cd0.web.app/
+https://portal-c1e64.web.app/
 
 ### Autenticação
 - Login com email e senha
